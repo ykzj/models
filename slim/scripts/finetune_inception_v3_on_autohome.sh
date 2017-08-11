@@ -12,13 +12,13 @@
 set -e
 
 # Where the pre-trained InceptionV3 checkpoint is saved to.
-PRETRAINED_CHECKPOINT_DIR=/tmp/checkpoints
+PRETRAINED_CHECKPOINT_DIR=/home/ec2-user/checkpoints
 
 # Where the training (fine-tuned) checkpoint and logs will be saved to.
-TRAIN_DIR=/tmp/flowers-models/inception_v3
+TRAIN_DIR=/home/ec2-user/autohome-models/inception_v3
 
 # Where the dataset is saved to.
-DATASET_DIR=/tmp/flowers
+DATASET_DIR=/home/ec2-user/data2
 
 # Download the pre-trained checkpoint.
 if [ ! -d "$PRETRAINED_CHECKPOINT_DIR" ]; then
@@ -33,13 +33,13 @@ fi
 
 # Download the dataset
 python download_and_convert_data.py \
-  --dataset_name=flowers \
+  --dataset_name=autohome \
   --dataset_dir=${DATASET_DIR}
 
 # Fine-tune only the new layers for 1000 steps.
 python train_image_classifier.py \
   --train_dir=${TRAIN_DIR} \
-  --dataset_name=flowers \
+  --dataset_name=autohome \
   --dataset_split_name=train \
   --dataset_dir=${DATASET_DIR} \
   --model_name=inception_v3 \
@@ -60,7 +60,7 @@ python train_image_classifier.py \
 python eval_image_classifier.py \
   --checkpoint_path=${TRAIN_DIR} \
   --eval_dir=${TRAIN_DIR} \
-  --dataset_name=flowers \
+  --dataset_name=autohome \
   --dataset_split_name=validation \
   --dataset_dir=${DATASET_DIR} \
   --model_name=inception_v3
@@ -68,7 +68,7 @@ python eval_image_classifier.py \
 # Fine-tune all the new layers for 500 steps.
 python train_image_classifier.py \
   --train_dir=${TRAIN_DIR}/all \
-  --dataset_name=flowers \
+  --dataset_name=autohome \
   --dataset_split_name=train \
   --dataset_dir=${DATASET_DIR} \
   --model_name=inception_v3 \
@@ -87,7 +87,7 @@ python train_image_classifier.py \
 python eval_image_classifier.py \
   --checkpoint_path=${TRAIN_DIR}/all \
   --eval_dir=${TRAIN_DIR}/all \
-  --dataset_name=flowers \
+  --dataset_name=autohome \
   --dataset_split_name=validation \
   --dataset_dir=${DATASET_DIR} \
   --model_name=inception_v3

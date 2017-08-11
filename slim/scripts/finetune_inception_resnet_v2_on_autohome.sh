@@ -11,16 +11,16 @@
 set -e
 
 # Where the pre-trained Inception Resnet V2 checkpoint is saved to.
-PRETRAINED_CHECKPOINT_DIR=/tmp/checkpoints
+PRETRAINED_CHECKPOINT_DIR=/home/ec2-user/checkpoints
 
 # Where the pre-trained Inception Resnet V2 checkpoint is saved to.
 MODEL_NAME=inception_resnet_v2
 
 # Where the training (fine-tuned) checkpoint and logs will be saved to.
-TRAIN_DIR=/tmp/autohome-models/${MODEL_NAME}
+TRAIN_DIR=/home/ec2-user/autohome-models/${MODEL_NAME}
 
 # Where the dataset is saved to.
-DATASET_DIR=/tmp/autohome
+DATASET_DIR=/home/ec2-user/data2
 
 # Download the pre-trained checkpoint.
 if [ ! -d "$PRETRAINED_CHECKPOINT_DIR" ]; then
@@ -38,58 +38,58 @@ python download_and_convert_data.py \
   --dataset_name=autohome \
   --dataset_dir=${DATASET_DIR}
 
-# Fine-tune only the new layers for 1000 steps.
-python train_image_classifier.py \
-  --train_dir=${TRAIN_DIR} \
-  --dataset_name=autohome \
-  --dataset_split_name=train \
-  --dataset_dir=${DATASET_DIR} \
-  --model_name=${MODEL_NAME} \
-  --checkpoint_path=${PRETRAINED_CHECKPOINT_DIR}/${MODEL_NAME}.ckpt \
-  --checkpoint_exclude_scopes=InceptionResnetV2/Logits,InceptionResnetV2/AuxLogits \
-  --trainable_scopes=InceptionResnetV2/Logits,InceptionResnetV2/AuxLogits \
-  --max_number_of_steps=1000 \
-  --batch_size=32 \
-  --learning_rate=0.01 \
-  --learning_rate_decay_type=fixed \
-  --save_interval_secs=60 \
-  --save_summaries_secs=60 \
-  --log_every_n_steps=10 \
-  --optimizer=rmsprop \
-  --weight_decay=0.00004
+# # Fine-tune only the new layers for 1000 steps.
+# python train_image_classifier.py \
+#   --train_dir=${TRAIN_DIR} \
+#   --dataset_name=autohome \
+#   --dataset_split_name=train \
+#   --dataset_dir=${DATASET_DIR} \
+#   --model_name=${MODEL_NAME} \
+#   --checkpoint_path=${PRETRAINED_CHECKPOINT_DIR}/${MODEL_NAME}.ckpt \
+#   --checkpoint_exclude_scopes=InceptionResnetV2/Logits,InceptionResnetV2/AuxLogits \
+#   --trainable_scopes=InceptionResnetV2/Logits,InceptionResnetV2/AuxLogits \
+#   --max_number_of_steps=1000 \
+#   --batch_size=32 \
+#   --learning_rate=0.01 \
+#   --learning_rate_decay_type=fixed \
+#   --save_interval_secs=60 \
+#   --save_summaries_secs=60 \
+#   --log_every_n_steps=10 \
+#   --optimizer=rmsprop \
+#   --weight_decay=0.00004
 
-# Run evaluation.
-python eval_image_classifier.py \
-  --checkpoint_path=${TRAIN_DIR} \
-  --eval_dir=${TRAIN_DIR} \
-  --dataset_name=autohome \
-  --dataset_split_name=validation \
-  --dataset_dir=${DATASET_DIR} \
-  --model_name=${MODEL_NAME}
+# # Run evaluation.
+# python eval_image_classifier.py \
+#   --checkpoint_path=${TRAIN_DIR} \
+#   --eval_dir=${TRAIN_DIR} \
+#   --dataset_name=autohome \
+#   --dataset_split_name=validation \
+#   --dataset_dir=${DATASET_DIR} \
+#   --model_name=${MODEL_NAME}
 
-# Fine-tune all the new layers for 500 steps.
-python train_image_classifier.py \
-  --train_dir=${TRAIN_DIR}/all \
-  --dataset_name=autohome \
-  --dataset_split_name=train \
-  --dataset_dir=${DATASET_DIR} \
-  --model_name=${MODEL_NAME} \
-  --checkpoint_path=${TRAIN_DIR} \
-  --max_number_of_steps=500 \
-  --batch_size=32 \
-  --learning_rate=0.0001 \
-  --learning_rate_decay_type=fixed \
-  --save_interval_secs=60 \
-  --save_summaries_secs=60 \
-  --log_every_n_steps=10 \
-  --optimizer=rmsprop \
-  --weight_decay=0.00004
+# # Fine-tune all the new layers for 500 steps.
+# python train_image_classifier.py \
+#   --train_dir=${TRAIN_DIR}/all \
+#   --dataset_name=autohome \
+#   --dataset_split_name=train \
+#   --dataset_dir=${DATASET_DIR} \
+#   --model_name=${MODEL_NAME} \
+#   --checkpoint_path=${TRAIN_DIR} \
+#   --max_number_of_steps=500 \
+#   --batch_size=32 \
+#   --learning_rate=0.0001 \
+#   --learning_rate_decay_type=fixed \
+#   --save_interval_secs=60 \
+#   --save_summaries_secs=60 \
+#   --log_every_n_steps=10 \
+#   --optimizer=rmsprop \
+#   --weight_decay=0.00004
 
-# Run evaluation.
-python eval_image_classifier.py \
-  --checkpoint_path=${TRAIN_DIR}/all \
-  --eval_dir=${TRAIN_DIR}/all \
-  --dataset_name=autohome \
-  --dataset_split_name=validation \
-  --dataset_dir=${DATASET_DIR} \
-  --model_name=${MODEL_NAME}
+# # Run evaluation.
+# python eval_image_classifier.py \
+#   --checkpoint_path=${TRAIN_DIR}/all \
+#   --eval_dir=${TRAIN_DIR}/all \
+#   --dataset_name=autohome \
+#   --dataset_split_name=validation \
+#   --dataset_dir=${DATASET_DIR} \
+#   --model_name=${MODEL_NAME}

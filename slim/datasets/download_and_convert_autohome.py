@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-r"""Downloads and converts Flowers data to TFRecords of TF-Example protos.
+r"""Downloads and converts autohome data to TFRecords of TF-Example protos.
 
-This module downloads the Flowers data, uncompresses it, reads the files
-that make up the Flowers data and creates two TFRecord datasets: one for train
+This module downloads the autohome data, uncompresses it, reads the files
+that make up the autohome data and creates two TFRecord datasets: one for train
 and one for test. Each TFRecord dataset is comprised of a set of TF-Example
 protocol buffers, each of which contain a single image and label.
 
@@ -38,7 +38,7 @@ from datasets import dataset_utils
 
 
 # The number of images in the validation set.
-_NUM_VALIDATION = 10000
+_NUM_VALIDATION = 5000
 
 # Seed for repeatability.
 _RANDOM_SEED = 0
@@ -97,7 +97,7 @@ def _get_filenames_and_classes(dataset_dir):
 
 
 def _get_dataset_filename(dataset_dir, split_name, shard_id):
-  output_filename = 'flowers_%s_%05d-of-%05d.tfrecord' % (
+  output_filename = 'autohome_%s_%05d-of-%05d.tfrecord' % (
       split_name, shard_id, _NUM_SHARDS)
   return os.path.join(dataset_dir, output_filename)
 
@@ -154,9 +154,9 @@ def _clean_up_temporary_files(dataset_dir):
   Args:
     dataset_dir: The directory where the temporary files are stored.
   """
-  filename = _DATA_URL.split('/')[-1]
-  filepath = os.path.join(dataset_dir, filename)
-  tf.gfile.Remove(filepath)
+  #filename = _DATA_URL.split('/')[-1]
+  #filepath = os.path.join(dataset_dir, filename)
+  #tf.gfile.Remove(filepath)
 
   # tmp_dir = os.path.join(dataset_dir, 'autohome')
   # tf.gfile.DeleteRecursively(tmp_dir)
@@ -206,4 +206,4 @@ def run(dataset_dir):
   dataset_utils.write_label_file(labels_to_class_names, dataset_dir)
 
   _clean_up_temporary_files(dataset_dir)
-  print('\nFinished converting the Flowers dataset!')
+  print('\nFinished converting the autohome dataset!')
