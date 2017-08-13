@@ -31,9 +31,9 @@ slim = tf.contrib.slim
 
 _FILE_PATTERN = 'autohome_%s_*.tfrecord'
 
-SPLITS_TO_SIZES = {'train': 60000, 'validation': 6018}
+SPLITS_TO_SIZES = {'train': 55000, 'validation': 5481}
 
-_NUM_CLASSES = 337
+_NUM_CLASSES = 334
 
 _ITEMS_TO_DESCRIPTIONS = {
     'image': 'A color image of varying size.',

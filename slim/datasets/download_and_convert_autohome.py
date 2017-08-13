@@ -38,7 +38,7 @@ from datasets import dataset_utils
 
 
 # The number of images in the validation set.
-_NUM_VALIDATION = 5000
+_NUM_VALIDATION = 6018
 
 # Seed for repeatability.
 _RANDOM_SEED = 0
@@ -129,8 +129,8 @@ def _convert_dataset(split_name, filenames, class_names_to_ids, dataset_dir):
           start_ndx = shard_id * num_per_shard
           end_ndx = min((shard_id+1) * num_per_shard, len(filenames))
           for i in range(start_ndx, end_ndx):
-            sys.stdout.write('\r>> Converting image %d/%d shard %d' % (
-                i+1, len(filenames), shard_id))
+            sys.stdout.write('\r>> Converting image %d/%d shard %d , filename: %s' % (
+                i+1, len(filenames), shard_id, filenames[i]))
             sys.stdout.flush()
 
             # Read the filename:
