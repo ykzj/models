@@ -11,16 +11,16 @@
 set -e
 
 # Where the pre-trained Inception Resnet V2 checkpoint is saved to.
-PRETRAINED_CHECKPOINT_DIR=/home/ec2-user/checkpoints
+PRETRAINED_CHECKPOINT_DIR=/data/checkpoints
 
 # Where the pre-trained Inception Resnet V2 checkpoint is saved to.
 MODEL_NAME=inception_resnet_v2
 
 # Where the training (fine-tuned) checkpoint and logs will be saved to.
-TRAIN_DIR=/home/ec2-user/autohome-models/${MODEL_NAME}
+TRAIN_DIR=/data/autohome/checkpoints/${MODEL_NAME}
 
 # Where the dataset is saved to.
-DATASET_DIR=/home/ec2-user/data2
+DATASET_DIR=/data/autohome/tfrecords
 
 # Download the pre-trained checkpoint.
 if [ ! -d "$PRETRAINED_CHECKPOINT_DIR" ]; then
@@ -49,7 +49,7 @@ python train_image_classifier.py \
   --checkpoint_exclude_scopes=InceptionResnetV2/Logits,InceptionResnetV2/AuxLogits \
   --trainable_scopes=InceptionResnetV2/Logits,InceptionResnetV2/AuxLogits \
   --max_number_of_steps=1000 \
-  --batch_size=32 \
+  --batch_size=16 \
   --learning_rate=0.01 \
   --learning_rate_decay_type=fixed \
   --save_interval_secs=60 \
@@ -76,7 +76,7 @@ python train_image_classifier.py \
   --model_name=${MODEL_NAME} \
   --checkpoint_path=${TRAIN_DIR} \
   --max_number_of_steps=500 \
-  --batch_size=32 \
+  --batch_size=8 \
   --learning_rate=0.0001 \
   --learning_rate_decay_type=fixed \
   --save_interval_secs=60 \
